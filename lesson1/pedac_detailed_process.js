@@ -1,4 +1,5 @@
 /*
+
 Imagine a sequence of consecutive even integers beginning with 2. The integers
 are grouped in rows, with the first row containing one integer,
 the second row two integers, the third row three integers, and so on.
@@ -97,5 +98,59 @@ Algorithm:
 4. repeat step 2 + 3 until array has reached the correct length
 5. return the "row" array.
 
+Start the loop
+  - Add startInteger to row array
+  - increment startInteger by 2
+  - break out of loop if length of row arr equals rowLength.
+
+Calculating starting integer for sumEvenNumberRow function:
+Rule: First integer of row equal to last integer of preceding row + 2
+
+Algorithm:
+============
+- Get the last row from the rows array
+- Get the last integer of that row
+- add 2 to the integer
 
 */
+
+function sumEvenNumberRow(rowNumber) {
+  const rows = [];
+  let startInteger = 2;
+
+  for (let currentRowNum = 1; currentRowNum <= rowNumber; currentRowNum++) {
+    let row = createRow(startInteger, currentRowNum);
+    rows.push(row);
+    startInteger = row[row.length - 1] + 2;
+    
+  }
+  return rows[rows.length - 1].reduce((acc, integer) => acc + integer, 0); // TODO: sum final row and return the sum
+}
+
+function createRow(startInteger, rowLength) {
+  const row = [];
+  let currentInteger = startInteger;
+
+  while (row.length < rowLength) {
+    row.push(currentInteger);
+    currentInteger += 2;
+  }
+
+  return row;
+}
+
+// row number: 1 --> sum of integers in row: 2
+// row number: 2 --> sum of integers in row: 10
+// row number: 4 --> sum of integers in row: 68
+
+console.log(sumEvenNumberRow(1)); // 2
+console.log(sumEvenNumberRow(2)); // 10
+console.log(sumEvenNumberRow(4)); // 68
+
+// start: 2, length: 1 --> [2]
+// start: 4, length: 2 --> [4, 6]
+// start: 8, length: 3 --> [8, 10, 12]
+
+// console.log(createRow(2, 1)); // [2]
+// console.log(createRow(4, 2)); // [4, 6]
+// console.log(createRow(8, 3)); // [8, 10, 12]
