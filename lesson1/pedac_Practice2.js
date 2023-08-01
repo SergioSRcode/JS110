@@ -113,11 +113,12 @@ console.log(countMaxAdjacentConsonants('aa')); // 0
 
 ALGORITHM:
 ==============
-- Remove the spaces from the input string
-- Initialize a count to zero
-- Initialize a temp string to an empty string
+# - Remove the spaces from the input string 
+# - Initialize a count to zero
+# - Initialize a temp string to an empty string
+#  - Initialize a Variable with an array of all vowels
 - Iterate through the input string. For each letter:
-  - If the letter is a consonant, concatenate it to the temp string
+ # - If the letter is a consonant, concatenate it to the temp string
   - If the letter is a vowel:
     - If the temp string has a length greater than 1 AND the temp string has a length 
       greater than the current count, set the count to the length of the temp string
@@ -125,4 +126,58 @@ ALGORITHM:
 - keep iteration going for the length of input string.
 - Return the count
 
+*/
+
+console.log(countMaxAdjacentConsonants('ddd aa jjj d'));
+
+function countMaxAdjacentConsonants(str) {
+  let count = 0;
+  let tempStr = "";
+  const VOWELS = ["a", "e", "i", "o", "u"];
+  str = str.replace(/ /g, "").toLowerCase();
+  console.log(str);
+
+  for (let i = 0; i < str.length; i++) {
+    if (!VOWELS.includes(str[i])) {
+      tempStr += str[i];
+    } else {
+        if ((tempStr.length > 1) && (tempStr.length > count)) {
+          count = tempStr.length;
+          tempStr = "";
+        }
+    }
+  }
+  if (tempStr.length > count) count = tempStr.length;
+
+  return count;
+}
+
+
+
+function sortStringsByConsonants(arr) {
+  let newArr = arr.slice();
+
+  for (let i = 0; i < newArr.length; i++) {
+    let counterOfCons = sortStringsByConsonants()
+    // store value somewhere
+  }
+  // step 4
+
+  return newArr;
+}
+
+/*
+1. create a function that takes an arr of strings as argument
+  1.1. create a new arr with all the elements of the original one.
+
+2. Iterate over each letter of each string within the arr
+  and check whether the current letter is a consonant
+  2.1. two iterators are needed, one to keep track of the current element
+  and one that iterates over each letter of said element.
+  2.2. If the current letter is a consonant, check whether the next is one too.
+    - repeat as often as possible.
+    - store amount once condition is false
+    - keep checking for the length of the word
+    - update consec. amount of consonants if current is > old one.
+    - go to next word/element
 */
