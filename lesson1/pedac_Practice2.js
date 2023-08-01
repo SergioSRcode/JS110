@@ -128,43 +128,44 @@ ALGORITHM:
 
 */
 
-console.log(countMaxAdjacentConsonants('ddd aa jjj d'));
+function sortStringsByConsonants(strings){
+
+  let sortedStrings = strings.sort((a, b) => countMaxAdjacentConsonants(b) - countMaxAdjacentConsonants(a));
+
+  return sortedStrings;
+}
 
 function countMaxAdjacentConsonants(str) {
   let count = 0;
   let tempStr = "";
   const VOWELS = ["a", "e", "i", "o", "u"];
   str = str.replace(/ /g, "").toLowerCase();
-  console.log(str);
 
   for (let i = 0; i < str.length; i++) {
     if (!VOWELS.includes(str[i])) {
       tempStr += str[i];
+      if (tempStr.length > 1 && tempStr.length > count) { count = tempStr.length }
     } else {
-        if ((tempStr.length > 1) && (tempStr.length > count)) {
-          count = tempStr.length;
-          tempStr = "";
+      if ((tempStr.length > 1) && (tempStr.length > count)) {
+        count = tempStr.length;
+        tempStr = "";
         }
     }
   }
-  if (tempStr.length > count) count = tempStr.length;
 
   return count;
 }
 
+console.log(sortStringsByConsonants(['aa', 'baa', 'ccaa', 'dddaa'])); 
+// ['dddaa', 'ccaa', 'aa', 'baa']
+console.log(sortStringsByConsonants(['can can', 'toucan', 'batman', 'salt pan'])); 
+// ['salt pan', 'can can', 'batman', 'toucan']
+console.log(sortStringsByConsonants(['bar', 'car', 'far', 'jar'])); 
+// ['bar', 'car', 'far', 'jar']
+console.log(sortStringsByConsonants(['day', 'week', 'month', 'year'])); 
+// ['month', 'day', 'week', 'year']
 
 
-function sortStringsByConsonants(arr) {
-  let newArr = arr.slice();
-
-  for (let i = 0; i < newArr.length; i++) {
-    let counterOfCons = sortStringsByConsonants()
-    // store value somewhere
-  }
-  // step 4
-
-  return newArr;
-}
 
 /*
 1. create a function that takes an arr of strings as argument
