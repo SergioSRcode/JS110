@@ -10,6 +10,9 @@
 // 10. Goodbye!
 
 const RL_SYNC = require("readline-sync");
+const INITIAL_MARKER = ' ';
+const HUMAN_MARKER = 'X';
+const COMPUTER_MARKER = 'O';
 
 function prompt(message) {
   console.log(`=> ${message}`);
@@ -35,16 +38,27 @@ function initializeBoard() {
   let board = {};
 
   for (let square = 1; square <= 9; square++) {
-    board[String(square)] = ' ';
+    board[String(square)] = INITIAL_MARKER;
   }
   
   return board;
 }
 
 function playerChoosesSquare(board) {
-  prompt('Choose a square(1-9');
-  let square = RL_SYNC.question();
-  board[square] = 'X';
+  let square;
+  let emptySquares = Object.keys(board).filter(key => board[key] === INITIAL_MARKER);
+
+  while (true) {
+    prompt(`Choose a square by selecting one of these positions
+    ${emptySquares.join(', ')}`);
+    square = RL_SYNC.question().trim();
+
+    if (emptySquares.includes(square)) break;
+
+      prompt(`Sorry, that's not a valid choice. Try again!`);
+  }
+
+  board[square] = HUMAN_MARKER;
 }
 
 // Program start
