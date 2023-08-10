@@ -10,6 +10,7 @@
 // 10. Goodbye!
 
 const RL_SYNC = require("readline-sync");
+
 const INITIAL_MARKER = ' ';
 const HUMAN_MARKER = 'X';
 const COMPUTER_MARKER = 'O';
@@ -44,21 +45,35 @@ function initializeBoard() {
   return board;
 }
 
+function emptySquares(board) {
+  return Object.keys(board).filter(key => board[key] === INITIAL_MARKER);
+}
+
 function playerChoosesSquare(board) {
   let square;
-  let emptySquares = Object.keys(board).filter(key => board[key] === INITIAL_MARKER);
 
   while (true) {
     prompt(`Choose a square by selecting one of these positions
-    ${emptySquares.join(', ')}`);
+    ${emptySquares(board).join(', ')}`);
     square = RL_SYNC.question().trim();
 
-    if (emptySquares.includes(square)) break;
+    if (emptySquares(board).includes(square)) break;
 
-      prompt(`Sorry, that's not a valid choice. Try again!`);
+    prompt(`Sorry, that's not a valid choice. Try again!`);
   }
 
   board[square] = HUMAN_MARKER;
+}
+
+function computerChoosesSquare(board) {
+  prompt('Computer chooses:');
+
+  let randomIndex = Math.floor(Math.random() * emptySquares(board).length);
+  // assuming value = 6 
+
+  let square = emptySquares(board)[randomIndex];
+  // [1, 2, 4, 5, 8, 9][6] => 9
+  board[square] = COMPUTER_MARKER; // computer choice = position 9
 }
 
 // Program start
@@ -67,5 +82,8 @@ let board = initializeBoard();
 displayBoard(board);
 
 playerChoosesSquare(board);
+displayBoard(board);
+
+computerChoosesSquare(board);
 displayBoard(board);
 
