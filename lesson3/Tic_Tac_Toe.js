@@ -9,6 +9,12 @@
 // 9. If yes, go to #1
 // 10. Goodbye!
 
+const RL_SYNC = require("readline-sync");
+
+function prompt(message) {
+  console.log(`=> ${message}`);
+}
+
 function displayBoard(board) {
   console.log('');
   console.log(`     |     |`);
@@ -35,6 +41,17 @@ function initializeBoard() {
   return board;
 }
 
+function playerChoosesSquare(board) {
+  prompt('Choose a square(1-9');
+  let square = RL_SYNC.question();
+  board[square] = 'X';
+}
+
+// Program start
+
 let board = initializeBoard();
+displayBoard(board);
+
+playerChoosesSquare(board);
 displayBoard(board);
 
