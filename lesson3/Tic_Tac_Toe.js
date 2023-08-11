@@ -19,8 +19,24 @@ function prompt(message) {
   console.log(`=> ${message}`);
 }
 
+function playAgain() {
+  let viableAnswers = ['yes', 'y', 'no', 'n'];
+  
+  prompt('Play again? (y or n)');
+  let answerYesOrNo = RL_SYNC.question().toLocaleLowerCase();
+
+  while (!viableAnswers.includes(answerYesOrNo)) {
+    prompt("Sorry, I didn't catch that. Play again, yes or no?");
+    answerYesOrNo = RL_SYNC.question().toLocaleLowerCase();
+  }
+
+  return answerYesOrNo;
+}
+
 function displayBoard(board) {
   console.clear();
+
+  console.log(`You are ${HUMAN_MARKER}. Computer is ${COMPUTER_MARKER}`);
 
   console.log('');
   console.log(`     |     |`);
@@ -112,21 +128,30 @@ function someoneWon(board) {
 }
 
 // Program start
+while (true) {
 
 let board = initializeBoard();
-displayBoard(board);
 
-while (true) {
-  playerChoosesSquare(board);
-  computerChoosesSquare(board);
+
+  while (true) {
+    displayBoard(board);
+
+    playerChoosesSquare(board);
+    if (someoneWon(board) || boardFull(board)) break;
+
+    computerChoosesSquare(board);
+    if (someoneWon(board) || boardFull(board)) break;
+  }
+
   displayBoard(board);
 
-  if (someoneWon(board) || boardFull(board)) break;
+  if (someoneWon(board)) {
+    prompt(`${detectWinner(board)} won!`);
+  } else {
+    prompt("It's a tie!");
+  }
+
+  if (playAgain()[0] !== 'y') break;
 }
 
-if (someoneWon(board)) {
-  prompt(`${detectWinner(board)} won!`);
-} else {
-  prompt("It's a tie!");
-}
-
+prompt('Thanks for playing Tic Tac Toe!');
