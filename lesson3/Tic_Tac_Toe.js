@@ -32,6 +32,23 @@ function playAgain() {
   return answerYesOrNo;
 }
 
+function joinOr(availableSquares, delimiter = ", ", seperatorWord = "or") {
+  let squaresAvailable;
+  let lastElement;
+
+  if (availableSquares.length === 0) return "";
+  if (availableSquares.length === 1) return String(availableSquares[0]);
+
+  if (availableSquares.length === 2) return availableSquares.join(` ${seperatorWord} `);
+
+  lastElement = seperatorWord + " " + availableSquares.pop();
+  availableSquares.push(lastElement);
+
+  squaresAvailable = availableSquares.join(delimiter);
+
+  return squaresAvailable;
+}
+
 function displayBoard(board) {
   console.clear();
 
@@ -73,7 +90,7 @@ function playerChoosesSquare(board) {
 
   while (true) {
     prompt(`Choose a square by selecting one of these positions
-    ${emptySquares(board).join(', ')}`);
+    ${joinOr(emptySquares(board), ', ')}`);
     square = RL_SYNC.question().trim();
 
     if (emptySquares(board).includes(square)) break;
