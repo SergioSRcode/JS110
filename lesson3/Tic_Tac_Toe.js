@@ -20,6 +20,8 @@ function prompt(message) {
 }
 
 function displayBoard(board) {
+  console.clear();
+
   console.log('');
   console.log(`     |     |`);
   console.log(`  ${board['1']}  |  ${board['2']}  |  ${board['3']}`);
@@ -66,11 +68,8 @@ function playerChoosesSquare(board) {
 }
 
 function computerChoosesSquare(board) {
-  prompt('Computer chooses:');  // displays on full board as well
-
   let randomIndex = Math.floor(Math.random() * emptySquares(board).length);
   // assuming value = 6 
-
   let square = emptySquares(board)[randomIndex];
   // [1, 2, 4, 5, 8, 9][6] => 9
   board[square] = COMPUTER_MARKER; // computer choice = position 9
@@ -80,8 +79,36 @@ function boardFull(board) {
   return emptySquares(board).length === 0;
 }
 
+function detectWinner(board) {
+  let winningLines = [
+    [1, 2, 3], [4, 5, 6], [7, 8, 9],  // rows
+    [1, 4, 7], [2, 5, 8], [3, 6, 9],  // columns
+    [1, 5, 9], [3, 5, 7]              // diagonals
+  ];
+
+  for (let line = 0; line < winningLines.length; line++) {
+    let [ sq1, sq2, sq3 ] = winningLines[line];
+
+    if (
+        board[sq1] === HUMAN_MARKER && // could be done with .every ?
+        board[sq2] === HUMAN_MARKER &&
+        board[sq3] === HUMAN_MARKER
+    ) {
+      return 'Player';
+    } else if (
+        board[sq1] === COMPUTER_MARKER &&
+        board[sq2] === COMPUTER_MARKER &&
+        board[sq3] === COMPUTER_MARKER
+    ) {
+      return 'Computer';
+    }
+  }
+
+  return null;
+}
+
 function someoneWon(board) {
-  return false;
+  return !!detectWinner(board);
 }
 
 // Program start
@@ -91,13 +118,15 @@ displayBoard(board);
 
 while (true) {
   playerChoosesSquare(board);
-  displayBoard(board);
-  
   computerChoosesSquare(board);
   displayBoard(board);
 
   if (someoneWon(board) || boardFull(board)) break;
 }
 
-
+if (someoneWon(board)) {
+  prompt(`${detectWinner(board)} won!`);
+} else {
+  prompt("It's a tie!");
+}
 
