@@ -11,9 +11,8 @@
 
 const RL_SYNC = require("readline-sync");
 
-const INITIAL_MARKER = ' ';
 const HUMAN_MARKER = 'X';
-const COMPUTER_MARKER = 'O';
+const COMPUTER_MARKER = 'C';
 
 function prompt(message) {
   console.log(`=> ${message}`);
@@ -57,14 +56,16 @@ function initializeBoard() {
   let board = {};
 
   for (let square = 1; square <= 9; square++) {
-    board[String(square)] = INITIAL_MARKER;
+    board[String(square)] = square;
   }
   
   return board;
 }
 
 function emptySquares(board) {
-  return Object.keys(board).filter(key => board[key] === INITIAL_MARKER);
+  return Object.keys(board)
+               .filter(key => (board[key] !== HUMAN_MARKER) && 
+                              (board[key] !== COMPUTER_MARKER));
 }
 
 function playerChoosesSquare(board) {
