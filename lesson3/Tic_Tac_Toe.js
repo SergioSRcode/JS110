@@ -66,7 +66,7 @@ function playerChoosesSquare(board) {
 }
 
 function computerChoosesSquare(board) {
-  prompt('Computer chooses:');
+  prompt('Computer chooses:');  // displays on full board as well
 
   let randomIndex = Math.floor(Math.random() * emptySquares(board).length);
   // assuming value = 6 
@@ -76,14 +76,28 @@ function computerChoosesSquare(board) {
   board[square] = COMPUTER_MARKER; // computer choice = position 9
 }
 
+function boardFull(board) {
+  return emptySquares(board).length === 0;
+}
+
+function someoneWon(board) {
+  return false;
+}
+
 // Program start
 
 let board = initializeBoard();
 displayBoard(board);
 
-playerChoosesSquare(board);
-displayBoard(board);
+while (true) {
+  playerChoosesSquare(board);
+  displayBoard(board);
+  
+  computerChoosesSquare(board);
+  displayBoard(board);
 
-computerChoosesSquare(board);
-displayBoard(board);
+  if (someoneWon(board) || boardFull(board)) break;
+}
+
+
 
