@@ -7,7 +7,7 @@
 // 7. If neither player won and the board is not full, go to #2
 // 8. Play again?
 // 9. If yes, go to #1
-// 10. Goodbye!
+// 10. Goodbye! d
 
 const RL_SYNC = require("readline-sync");
 
