@@ -4,7 +4,7 @@ function matchIsWon(scoreBoard) {
   return Object.values(scoreBoard).some(score => score === WINNING_SCORE);
 }
 
-function getplayMatchWinner(scoreBoard) {
+function getMatchWinner(scoreBoard) {
   return scoreBoard.Player === WINNING_SCORE ? "You are" : "Computer is";
 }
 

@@ -13,20 +13,25 @@ const RL_SYNC = require("readline-sync");
 
 const HUMAN_MARKER = '❌';
 const COMPUTER_MARKER = '⚪️';
+const WINNING_SCORE = 5;
 
 function prompt(message) {
   console.log(`=> ${message}`);
+}
+
+function display(message, message2 = "") {
+  console.log(`${message} ${message2}`);
 }
 
 function playAgain() {
   let viableAnswers = ['yes', 'y', 'no', 'n'];
   
   prompt('Play again? (y or n)');
-  let answerYesOrNo = RL_SYNC.question().toLocaleLowerCase();
+  let answerYesOrNo = RL_SYNC.question().toLowerCase();
 
   while (!viableAnswers.includes(answerYesOrNo)) {
     prompt("Sorry, I didn't catch that. Play again, yes or no?");
-    answerYesOrNo = RL_SYNC.question().toLocaleLowerCase();
+    answerYesOrNo = RL_SYNC.question().toLowerCase();
   }
 
   return answerYesOrNo;
@@ -48,8 +53,6 @@ function joinOr(availableSquares, delimiter = ", ", seperatorWord = "or") {
 }
 
 function displayBoard(board) {
-  console.clear();
-
   console.log(`You are ${HUMAN_MARKER}. Computer is ${COMPUTER_MARKER}`);
 
   console.log('');
@@ -143,13 +146,24 @@ function someoneWon(board) {
   return !!detectWinner(board);
 }
 
-// Program start
-while (true) {
+function matchIsWon(scoreBoard) {
+  return Object.values(scoreBoard).some(score => score === WINNING_SCORE);
+}
 
-let board = initializeBoard();
+function getMatchWinner(scoreBoard) {
+  return scoreBoard.Player === WINNING_SCORE ? "You are" : "Computer is";
+}
 
+function getScore(playerScore, computerScore) {
+  return `[Player: ${playerScore} | Computer: ${computerScore}]`;
+}
 
+function playRound(board, score) {
   while (true) {
+    console.clear();
+
+    display(score);
+
     displayBoard(board);
 
     playerChoosesSquare(board);
@@ -160,13 +174,34 @@ let board = initializeBoard();
   }
 
   displayBoard(board);
+}
 
-  if (someoneWon(board)) {
-    prompt(`${detectWinner(board)} won!`);
-  } else {
-    prompt("It's a tie!");
+function startMatch() {
+  let scoreBoard = {
+    Player: 0,
+    Computer: 0,
+  };
+
+  while (true) {
+    let board = initializeBoard();
+
+    playRound(board, getScore(scoreBoard.Player, scoreBoard.Computer));
+
+    if (detectWinner(board)) scoreBoard[detectWinner(board)] += 1;
+
+    if (matchIsWon(scoreBoard)) {
+      console.clear();
+      prompt(`${getMatchWinner(scoreBoard)} the winner of the match!`);
+      break;
+    }
   }
+}
 
+
+// Program start
+while (true) {
+  console.clear();
+  startMatch();
   if (playAgain()[0] !== 'y') break;
 }
 
