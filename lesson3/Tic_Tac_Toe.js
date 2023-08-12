@@ -33,10 +33,10 @@ function playAgain() {
 }
 
 function joinOr(availableSquares, delimiter = ", ", seperatorWord = "or") {
-  let squaresAvailable;
   let lastElement;
 
   if (availableSquares.length === 0) return "";
+  
   if (availableSquares.length === 1) return String(availableSquares[0]);
 
   if (availableSquares.length === 2) return availableSquares.join(` ${seperatorWord} `);
@@ -44,9 +44,7 @@ function joinOr(availableSquares, delimiter = ", ", seperatorWord = "or") {
   lastElement = seperatorWord + " " + availableSquares.pop();
   availableSquares.push(lastElement);
 
-  squaresAvailable = availableSquares.join(delimiter);
-
-  return squaresAvailable;
+  return availableSquares.join(delimiter);
 }
 
 function displayBoard(board) {
