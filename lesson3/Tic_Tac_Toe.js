@@ -14,6 +14,11 @@ const RL_SYNC = require("readline-sync");
 const HUMAN_MARKER = '❌';
 const COMPUTER_MARKER = '⚪️';
 const WINNING_SCORE = 5;
+const WINNING_LINES = [
+  [1, 2, 3], [4, 5, 6], [7, 8, 9],  // rows
+  [1, 4, 7], [2, 5, 8], [3, 6, 9],  // columns
+  [1, 5, 9], [3, 5, 7]              // diagonals
+];
 
 function prompt(message) {
   console.log(`=> ${message}`);
@@ -103,11 +108,36 @@ function playerChoosesSquare(board) {
 }
 
 function computerChoosesSquare(board) {
-  let randomIndex = Math.floor(Math.random() * emptySquares(board).length);
-  // assuming value = 6 
-  let square = emptySquares(board)[randomIndex];
-  // [1, 2, 4, 5, 8, 9][6] => 9
-  board[square] = COMPUTER_MARKER; // computer choice = position 9
+  let square;
+
+  if (!!computerRequiresDefence(board)) {
+    square = computerRequiresDefence(board);
+  } else {
+    let randomIndex = Math.floor(Math.random() * emptySquares(board).length);
+    square = emptySquares(board)[randomIndex];
+  }
+
+  board[square] = COMPUTER_MARKER;
+}
+
+function computerRequiresDefence(board) {
+  for (let line = 0; line < WINNING_LINES.length; line++) {
+    let [ sq1, sq2, sq3 ] = WINNING_LINES[line];
+
+    if ((HUMAN_MARKER === board[sq1]) && 
+        (HUMAN_MARKER === board[sq2]) && 
+        (COMPUTER_MARKER !== board[sq3])) return sq3;
+
+    if ((HUMAN_MARKER === board[sq2]) && 
+        (HUMAN_MARKER === board[sq3]) && 
+        (COMPUTER_MARKER !== board[sq1])) return sq1;
+
+    if ((HUMAN_MARKER === board[sq3]) && 
+        (HUMAN_MARKER === board[sq1]) && 
+        (COMPUTER_MARKER !== board[sq2])) return sq2;
+
+  }
+  return null;
 }
 
 function boardFull(board) {
@@ -115,14 +145,8 @@ function boardFull(board) {
 }
 
 function detectWinner(board) {
-  let winningLines = [
-    [1, 2, 3], [4, 5, 6], [7, 8, 9],  // rows
-    [1, 4, 7], [2, 5, 8], [3, 6, 9],  // columns
-    [1, 5, 9], [3, 5, 7]              // diagonals
-  ];
-
-  for (let line = 0; line < winningLines.length; line++) {
-    let [ sq1, sq2, sq3 ] = winningLines[line];
+  for (let line = 0; line < WINNING_LINES.length; line++) {
+    let [ sq1, sq2, sq3 ] = WINNING_LINES[line];
 
     if (
         board[sq1] === HUMAN_MARKER && // could be done with .every ?
