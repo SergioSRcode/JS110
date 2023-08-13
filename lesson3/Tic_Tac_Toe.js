@@ -29,8 +29,12 @@ function display(message, message2 = "") {
 }
 
 function continueToNextRound(board) {
+  if (!detectWinner(board)) {
+    prompt("It's a tie!");
+  } else {
   prompt(`${detectWinner(board)} won this round!`);
   if (detectWinner(board) === "Player") prompt('Congrats!');
+  }
 
   display("");
   
@@ -134,8 +138,10 @@ function computerRequiresDefence(board) {
         (COMPUTER_MARKER !== board[sq2])) return sq2;
 
   }
+
   return null;
 }
+
 function computerRequiresOffence(board) {
   for (let line = 0; line < WINNING_LINES.length; line++) {
     let [ sq1, sq2, sq3 ] = WINNING_LINES[line];
@@ -153,6 +159,7 @@ function computerRequiresOffence(board) {
         (HUMAN_MARKER !== board[sq2])) return sq2;
 
   }
+
   return null;
 }
 
@@ -186,12 +193,14 @@ function detectWinner(board) {
         board[sq2] === HUMAN_MARKER &&
         board[sq3] === HUMAN_MARKER
     ) {
+
       return 'Player';
     } else if (
         board[sq1] === COMPUTER_MARKER &&
         board[sq2] === COMPUTER_MARKER &&
         board[sq3] === COMPUTER_MARKER
     ) {
+      
       return 'Computer';
     }
   }
@@ -229,6 +238,7 @@ function playRound(board, score) {
     computerChoosesSquare(board);
     if (someoneWon(board) || boardFull(board)) break;
   }
+
   console.clear();
   displayBoard(board);
   continueToNextRound(board);
