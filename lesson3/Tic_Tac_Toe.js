@@ -29,7 +29,7 @@ function display(message, message2 = "") {
 }
 
 function continueToNextRound(board) {
-  prompt(`${detectWinner(board)} won this round!`)
+  prompt(`${detectWinner(board)} won this round!`);
   if (detectWinner(board) === "Player") prompt('Congrats!');
 
   display("");
