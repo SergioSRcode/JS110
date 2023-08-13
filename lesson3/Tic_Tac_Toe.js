@@ -32,19 +32,19 @@ function continueToNextRound(board) {
   if (!detectWinner(board)) {
     prompt("It's a tie!");
   } else {
-  prompt(`${detectWinner(board)} won this round!`);
-  if (detectWinner(board) === "Player") prompt('Congrats!');
+    prompt(`${detectWinner(board)} won this round!`);
+    if (detectWinner(board) === "Player") prompt('Congrats!');
   }
 
   display("");
-  
+
   prompt('Press Enter to continue to the next round!');
   RL_SYNC.question();
 }
 
 function playAgain() {
   let viableAnswers = ['yes', 'y', 'no', 'n'];
-  
+
   prompt('Play again? (y or n)');
   let answerYesOrNo = RL_SYNC.question().toLowerCase();
 
@@ -60,7 +60,7 @@ function joinOr(availableSquares, delimiter = ", ", seperatorWord = "or") {
   let lastElement;
 
   if (availableSquares.length === 0) return "";
-  
+
   if (availableSquares.length === 1) return String(availableSquares[0]);
 
   if (availableSquares.length === 2) return availableSquares.join(` ${seperatorWord} `);
@@ -95,14 +95,14 @@ function initializeBoard() {
   for (let square = 1; square <= 9; square++) {
     board[String(square)] = " " + square;
   }
-  
+
   return board;
 }
 
 function emptySquares(board) {
   return Object.keys(board)
-               .filter(key => (board[key] !== HUMAN_MARKER) && 
-                              (board[key] !== COMPUTER_MARKER));
+    .filter(key => (board[key] !== HUMAN_MARKER) &&
+                   (board[key] !== COMPUTER_MARKER));
 }
 
 function playerChoosesSquare(board) {
@@ -125,16 +125,16 @@ function computerRequiresDefence(board) {
   for (let line = 0; line < WINNING_LINES.length; line++) {
     let [ sq1, sq2, sq3 ] = WINNING_LINES[line];
 
-    if ((HUMAN_MARKER === board[sq1]) && 
-        (HUMAN_MARKER === board[sq2]) && 
+    if ((HUMAN_MARKER === board[sq1]) &&
+        (HUMAN_MARKER === board[sq2]) &&
         (COMPUTER_MARKER !== board[sq3])) return sq3;
 
-    if ((HUMAN_MARKER === board[sq2]) && 
-        (HUMAN_MARKER === board[sq3]) && 
+    if ((HUMAN_MARKER === board[sq2]) &&
+        (HUMAN_MARKER === board[sq3]) &&
         (COMPUTER_MARKER !== board[sq1])) return sq1;
 
-    if ((HUMAN_MARKER === board[sq3]) && 
-        (HUMAN_MARKER === board[sq1]) && 
+    if ((HUMAN_MARKER === board[sq3]) &&
+        (HUMAN_MARKER === board[sq1]) &&
         (COMPUTER_MARKER !== board[sq2])) return sq2;
 
   }
@@ -146,16 +146,16 @@ function computerRequiresOffence(board) {
   for (let line = 0; line < WINNING_LINES.length; line++) {
     let [ sq1, sq2, sq3 ] = WINNING_LINES[line];
 
-    if ((COMPUTER_MARKER === board[sq1]) && 
-        (COMPUTER_MARKER === board[sq2]) && 
+    if ((COMPUTER_MARKER === board[sq1]) &&
+        (COMPUTER_MARKER === board[sq2]) &&
         (HUMAN_MARKER !== board[sq3])) return sq3;
 
-    if ((COMPUTER_MARKER === board[sq2]) && 
-        (COMPUTER_MARKER === board[sq3]) && 
+    if ((COMPUTER_MARKER === board[sq2]) &&
+        (COMPUTER_MARKER === board[sq3]) &&
         (HUMAN_MARKER !== board[sq1])) return sq1;
 
-    if ((COMPUTER_MARKER === board[sq3]) && 
-        (COMPUTER_MARKER === board[sq1]) && 
+    if ((COMPUTER_MARKER === board[sq3]) &&
+        (COMPUTER_MARKER === board[sq1]) &&
         (HUMAN_MARKER !== board[sq2])) return sq2;
 
   }
@@ -166,9 +166,9 @@ function computerRequiresOffence(board) {
 function computerChoosesSquare(board) {
   let square;
 
-  if (!!computerRequiresOffence(board)) {
+  if (computerRequiresOffence(board)) {
     square = computerRequiresOffence(board);
-  } else if (!!computerRequiresDefence(board)) {
+  } else if (computerRequiresDefence(board)) {
     square = computerRequiresDefence(board);
   } else if (board['5'] !== HUMAN_MARKER && board['5'] !== COMPUTER_MARKER) {
     square = '5';
@@ -189,18 +189,16 @@ function detectWinner(board) {
     let [ sq1, sq2, sq3 ] = WINNING_LINES[line];
 
     if (
-        board[sq1] === HUMAN_MARKER && // could be done with .every ?
-        board[sq2] === HUMAN_MARKER &&
-        board[sq3] === HUMAN_MARKER
+      board[sq1] === HUMAN_MARKER && // could be done with .every ?
+      board[sq2] === HUMAN_MARKER &&
+      board[sq3] === HUMAN_MARKER
     ) {
-
       return 'Player';
     } else if (
-        board[sq1] === COMPUTER_MARKER &&
-        board[sq2] === COMPUTER_MARKER &&
-        board[sq3] === COMPUTER_MARKER
+      board[sq1] === COMPUTER_MARKER &&
+      board[sq2] === COMPUTER_MARKER &&
+      board[sq3] === COMPUTER_MARKER
     ) {
-      
       return 'Computer';
     }
   }
