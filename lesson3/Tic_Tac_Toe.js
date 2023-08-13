@@ -126,12 +126,35 @@ function computerRequiresDefence(board) {
   }
   return null;
 }
+function computerRequiresOffence(board) {
+  for (let line = 0; line < WINNING_LINES.length; line++) {
+    let [ sq1, sq2, sq3 ] = WINNING_LINES[line];
+
+    if ((COMPUTER_MARKER === board[sq1]) && 
+        (COMPUTER_MARKER === board[sq2]) && 
+        (HUMAN_MARKER !== board[sq3])) return sq3;
+
+    if ((COMPUTER_MARKER === board[sq2]) && 
+        (COMPUTER_MARKER === board[sq3]) && 
+        (HUMAN_MARKER !== board[sq1])) return sq1;
+
+    if ((COMPUTER_MARKER === board[sq3]) && 
+        (COMPUTER_MARKER === board[sq1]) && 
+        (HUMAN_MARKER !== board[sq2])) return sq2;
+
+  }
+  return null;
+}
 
 function computerChoosesSquare(board) {
   let square;
 
-  if (!!computerRequiresDefence(board)) {
+  if (!!computerRequiresOffence(board)) {
+    square = computerRequiresOffence(board);
+  } else if (!!computerRequiresDefence(board)) {
     square = computerRequiresDefence(board);
+  } else if (board['5'] !== HUMAN_MARKER && board['5'] !== COMPUTER_MARKER) {
+    square = '5';
   } else {
     let randomIndex = Math.floor(Math.random() * emptySquares(board).length);
     square = emptySquares(board)[randomIndex];
