@@ -28,6 +28,16 @@ function display(message, message2 = "") {
   console.log(`${message} ${message2}`);
 }
 
+function continueToNextRound(board) {
+  prompt(`${detectWinner(board)} won this round!`)
+  if (detectWinner(board) === "Player") prompt('Congrats!');
+
+  display("");
+  
+  prompt('Press Enter to continue to the next round!');
+  RL_SYNC.question();
+}
+
 function playAgain() {
   let viableAnswers = ['yes', 'y', 'no', 'n'];
   
@@ -219,8 +229,9 @@ function playRound(board, score) {
     computerChoosesSquare(board);
     if (someoneWon(board) || boardFull(board)) break;
   }
-
+  console.clear();
   displayBoard(board);
+  continueToNextRound(board);
 }
 
 function startMatch() {
