@@ -107,19 +107,6 @@ function playerChoosesSquare(board) {
   board[square] = HUMAN_MARKER;
 }
 
-function computerChoosesSquare(board) {
-  let square;
-
-  if (!!computerRequiresDefence(board)) {
-    square = computerRequiresDefence(board);
-  } else {
-    let randomIndex = Math.floor(Math.random() * emptySquares(board).length);
-    square = emptySquares(board)[randomIndex];
-  }
-
-  board[square] = COMPUTER_MARKER;
-}
-
 function computerRequiresDefence(board) {
   for (let line = 0; line < WINNING_LINES.length; line++) {
     let [ sq1, sq2, sq3 ] = WINNING_LINES[line];
@@ -138,6 +125,19 @@ function computerRequiresDefence(board) {
 
   }
   return null;
+}
+
+function computerChoosesSquare(board) {
+  let square;
+
+  if (!!computerRequiresDefence(board)) {
+    square = computerRequiresDefence(board);
+  } else {
+    let randomIndex = Math.floor(Math.random() * emptySquares(board).length);
+    square = emptySquares(board)[randomIndex];
+  }
+
+  board[square] = COMPUTER_MARKER;
 }
 
 function boardFull(board) {
@@ -220,7 +220,6 @@ function startMatch() {
     }
   }
 }
-
 
 // Program start
 while (true) {
