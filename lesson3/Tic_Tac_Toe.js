@@ -59,10 +59,10 @@ function continueToNextRound(board) {
     if (detectWinner(board) === "Player") prompt('Congrats!');
   }
 
-  display("");
+  // display("");
 
-  prompt('Press Enter to continue to the next round!');
-  RL_SYNC.question();
+  // prompt('Press Enter to continue to the next round!');
+  // RL_SYNC.question();
 }
 
 function playAgain() {
@@ -277,8 +277,9 @@ function startMatch() {
     Computer: 0,
   };
 
+  let starter = getStarterOfRound();
+
   while (true) {
-    let starter = getStarterOfRound();
     let board = initializeBoard();
 
     playRound(board, getScore(scoreBoard.Player, scoreBoard.Computer), starter);
@@ -286,9 +287,11 @@ function startMatch() {
     if (detectWinner(board)) scoreBoard[detectWinner(board)] += 1;
 
     if (matchIsWon(scoreBoard)) {
-      console.clear();
+      // console.clear();
       prompt(`${getMatchWinner(scoreBoard)} the winner of the match!`);
       break;
+    } else {
+      starter = getStarterOfRound();
     }
   }
 }
