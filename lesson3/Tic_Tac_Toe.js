@@ -19,6 +19,7 @@ const WINNING_LINES = [
   [1, 4, 7], [2, 5, 8], [3, 6, 9],  // columns
   [1, 5, 9], [3, 5, 7]              // diagonals
 ];
+const WHO_GOES_FIRST = [["player", "p"], ["computer", "c"]];
 
 function prompt(message) {
   console.log(`=> ${message}`);
@@ -26,6 +27,28 @@ function prompt(message) {
 
 function display(message, message2 = "") {
   console.log(`${message} ${message2}`);
+}
+
+// eslint-disable-next-line consistent-return
+function getStarterOfRound() {
+  let playerIsStarter = 'Player';
+  let computerIsStarter = 'Computer';
+
+  prompt('Who gets the fist turn?');
+  prompt(`${WHO_GOES_FIRST[0][0]} (${WHO_GOES_FIRST[0][1]}) or 
+  ${WHO_GOES_FIRST[1][0]} (${WHO_GOES_FIRST[1][1]})`);
+
+  let starter = RL_SYNC.question().toLowerCase();
+
+  while (!WHO_GOES_FIRST[0].includes(starter) &&
+         !WHO_GOES_FIRST[1].includes(starter)) {
+    prompt('Wait, who is that?... Try again!');
+    starter = RL_SYNC.question().toLowerCase();
+  }
+
+  if (WHO_GOES_FIRST[0].includes(starter)) return playerIsStarter;
+
+  if (WHO_GOES_FIRST[1].includes(starter)) return computerIsStarter;
 }
 
 function continueToNextRound(board) {
@@ -222,19 +245,25 @@ function getScore(playerScore, computerScore) {
   return `[Player: ${playerScore} | Computer: ${computerScore}]`;
 }
 
-function playRound(board, score) {
+// eslint-disable-next-line max-lines-per-function
+function playRound(board, score, starter) {
   while (true) {
+    if (starter === 'Computer') {
+      computerChoosesSquare(board);
+      if (someoneWon(board) || boardFull(board)) break;
+    }
+
     console.clear();
-
     display(score);
-
     displayBoard(board);
 
     playerChoosesSquare(board);
     if (someoneWon(board) || boardFull(board)) break;
 
-    computerChoosesSquare(board);
-    if (someoneWon(board) || boardFull(board)) break;
+    if (starter === 'Player') {
+      computerChoosesSquare(board);
+      if (someoneWon(board) || boardFull(board)) break;
+    }
   }
 
   console.clear();
@@ -249,9 +278,10 @@ function startMatch() {
   };
 
   while (true) {
+    let starter = getStarterOfRound();
     let board = initializeBoard();
 
-    playRound(board, getScore(scoreBoard.Player, scoreBoard.Computer));
+    playRound(board, getScore(scoreBoard.Player, scoreBoard.Computer), starter);
 
     if (detectWinner(board)) scoreBoard[detectWinner(board)] += 1;
 
