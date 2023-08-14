@@ -1,16 +1,7 @@
-// 1. Display the initial empty 3x3 board.
-// 2. Ask the user to mark a square.
-// 3. Computer marks a square.
-// 4. Display the updated board state.
-// 5. If it's a winning board, display the winner.
-// 6. If the board is full, display tie.
-// 7. If neither player won and the board is not full, go to #2
-// 8. Play again?
-// 9. If yes, go to #1
-// 10. Goodbye! d
-
+// Meta data
 const RL_SYNC = require("readline-sync");
 
+// Helper constants
 const HUMAN_MARKER = '❌';
 const COMPUTER_MARKER = '⚪️';
 const WINNING_SCORE = 5;
@@ -21,6 +12,7 @@ const WINNING_LINES = [
 ];
 const WHO_GOES_FIRST = [["player", "p"], ["computer", "c"]];
 
+// Helper functions
 function prompt(message) {
   console.log(`=> ${message}`);
 }
@@ -51,6 +43,7 @@ function getStarterOfRound() {
   if (WHO_GOES_FIRST[1].includes(starter)) return computerIsStarter;
 }
 
+// Displays before new round begins
 function continueToNextRound(board) {
   if (!detectWinner(board)) {
     prompt("It's a tie!");
@@ -58,11 +51,6 @@ function continueToNextRound(board) {
     prompt(`${detectWinner(board)} won this round!`);
     if (detectWinner(board) === "Player") prompt('Congrats!');
   }
-
-  // display("");
-
-  // prompt('Press Enter to continue to the next round!');
-  // RL_SYNC.question();
 }
 
 function playAgain() {
@@ -79,6 +67,7 @@ function playAgain() {
   return answerYesOrNo;
 }
 
+// appends the last two number with "or" or a word of choice
 function joinOr(availableSquares, delimiter = ", ", seperatorWord = "or") {
   let lastElement;
 
@@ -287,7 +276,6 @@ function startMatch() {
     if (detectWinner(board)) scoreBoard[detectWinner(board)] += 1;
 
     if (matchIsWon(scoreBoard)) {
-      // console.clear();
       prompt(`${getMatchWinner(scoreBoard)} the winner of the match!`);
       break;
     } else {
