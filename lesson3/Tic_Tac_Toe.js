@@ -21,6 +21,16 @@ function display(message, message2 = "") {
   console.log(`${message} ${message2}`);
 }
 
+function welcomeToTTT() {
+  console.log("Welcome to Tic Tac Toe!");
+  console.log(`-----------------------`);
+  console.log("");
+  console.log("Don't forget to have fun while loosing to the 🤖!");
+  console.log("");
+  prompt("Press Enter to continue!");
+  RL_SYNC.question();
+}
+
 // eslint-disable-next-line consistent-return
 function getStarterOfRound() {
   let playerIsStarter = 'Player';
@@ -285,6 +295,10 @@ function startMatch() {
 }
 
 // Program start
+
+console.clear();
+welcomeToTTT();
+
 while (true) {
   console.clear();
   startMatch();
