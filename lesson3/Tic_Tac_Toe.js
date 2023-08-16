@@ -247,7 +247,7 @@ function getMatchWinner(scoreBoard) {
   return scoreBoard.Player === WINNING_SCORE ? "You are" : `${COMPUTER} is`;
 }
 
-function getScore(playerScore, computerScore) {
+function getPrintibleScore(playerScore, computerScore) {
   return `+${"-".repeat(25)}+
 | ${PLAYER}: ${playerScore} | ${COMPUTER}: ${computerScore} |
 +${"-".repeat(25)}+`;
@@ -290,7 +290,8 @@ function startMatch() {
   while (true) {
     let board = initializeBoard();
 
-    playRound(board, getScore(scoreBoard.Player, scoreBoard.Computer), starter);
+    // eslint-disable-next-line max-len
+    playRound(board, getPrintibleScore(scoreBoard.Player, scoreBoard.Computer), starter);
 
     if (detectWinner(board)) scoreBoard[detectWinner(board)] += 1;
 
