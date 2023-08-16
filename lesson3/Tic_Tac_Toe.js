@@ -60,7 +60,7 @@ function getStarterOfRound() {
 }
 
 // Displays before new round begins
-function continueToNextRound(board) {
+function congratulateRoundWinner(board) {
   if (!detectWinner(board)) {
     prompt("It's a tie!");
   } else {
@@ -276,7 +276,7 @@ function playRound(board, score, starter) {
 
   console.clear();
   displayBoard(board);
-  continueToNextRound(board);
+  congratulateRoundWinner(board);
 }
 
 function startMatch() {
