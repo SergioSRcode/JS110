@@ -25,9 +25,13 @@ function welcomeToTTT() {
   console.log("Welcome to Tic Tac Toe!");
   console.log(`-----------------------`);
   console.log("");
-  console.log("Don't forget to have fun while loosing to the 🤖!");
+  console.log("* The game is played in a match format.");
+  console.log("* When either player or computer wins 5 rounds, the match is concluded!");
   console.log("");
-  prompt("Press Enter to continue!");
+  console.log("-- Don't forget to have fun while losing to the 🤖! --");
+  console.log("");
+  console.log("");
+  prompt("Press Enter to start the game!");
   RL_SYNC.question();
 }
 
@@ -37,8 +41,8 @@ function getStarterOfRound() {
   let computerIsStarter = 'Computer';
 
   prompt('Who gets the fist turn?');
-  prompt(`${WHO_GOES_FIRST[0][0]} (${WHO_GOES_FIRST[0][1]}) or 
-  ${WHO_GOES_FIRST[1][0]} (${WHO_GOES_FIRST[1][1]})`);
+  prompt(`${WHO_GOES_FIRST[0][0]} (${WHO_GOES_FIRST[0][1]}) or ` +
+  `${WHO_GOES_FIRST[1][0]} (${WHO_GOES_FIRST[1][1]})`);
 
   let starter = RL_SYNC.question().toLowerCase();
 
