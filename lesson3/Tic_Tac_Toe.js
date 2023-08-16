@@ -11,6 +11,8 @@ const WINNING_LINES = [
   [1, 5, 9], [3, 5, 7]              // diagonals
 ];
 const WHO_GOES_FIRST = [["player", "p"], ["computer", "c"]];
+const PLAYER = "Player";
+const COMPUTER = "Computer";
 
 // Helper functions
 function prompt(message) {
@@ -37,8 +39,8 @@ function welcomeToTTT() {
 
 // eslint-disable-next-line consistent-return
 function getStarterOfRound() {
-  let playerIsStarter = 'Player';
-  let computerIsStarter = 'Computer';
+  let playerIsStarter = PLAYER;
+  let computerIsStarter = COMPUTER;
 
   prompt('Who gets the fist turn?');
   prompt(`${WHO_GOES_FIRST[0][0]} (${WHO_GOES_FIRST[0][1]}) or ` +
@@ -63,8 +65,9 @@ function continueToNextRound(board) {
     prompt("It's a tie!");
   } else {
     prompt(`${detectWinner(board)} won this round!`);
-    if (detectWinner(board) === "Player") prompt('Congrats!');
+    if (detectWinner(board) === PLAYER) prompt('Congrats!');
   }
+  console.log("");
 }
 
 function playAgain() {
@@ -98,7 +101,7 @@ function joinOr(availableSquares, delimiter = ", ", seperatorWord = "or") {
 }
 
 function displayBoard(board) {
-  console.log(`You are ${HUMAN_MARKER}. Computer is ${COMPUTER_MARKER}`);
+  console.log(`You are ${HUMAN_MARKER}. ${COMPUTER} is ${COMPUTER_MARKER}`);
 
   console.log('');
   console.log(`     |     |`);
@@ -219,13 +222,13 @@ function detectWinner(board) {
       board[sq2] === HUMAN_MARKER &&
       board[sq3] === HUMAN_MARKER
     ) {
-      return 'Player';
+      return PLAYER;
     } else if (
       board[sq1] === COMPUTER_MARKER &&
       board[sq2] === COMPUTER_MARKER &&
       board[sq3] === COMPUTER_MARKER
     ) {
-      return 'Computer';
+      return COMPUTER;
     }
   }
 
@@ -241,19 +244,19 @@ function matchIsWon(scoreBoard) {
 }
 
 function getMatchWinner(scoreBoard) {
-  return scoreBoard.Player === WINNING_SCORE ? "You are" : "Computer is";
+  return scoreBoard.Player === WINNING_SCORE ? "You are" : `${COMPUTER} is`;
 }
 
 function getScore(playerScore, computerScore) {
   return `+${"-".repeat(25)}+
-| Player: ${playerScore} | Computer: ${computerScore} |
+| ${PLAYER}: ${playerScore} | ${COMPUTER}: ${computerScore} |
 +${"-".repeat(25)}+`;
 }
 
 // eslint-disable-next-line max-lines-per-function
 function playRound(board, score, starter) {
   while (true) {
-    if (starter === 'Computer') {
+    if (starter === COMPUTER) {
       computerChoosesSquare(board);
       if (someoneWon(board) || boardFull(board)) break;
     }
@@ -265,7 +268,7 @@ function playRound(board, score, starter) {
     playerChoosesSquare(board);
     if (someoneWon(board) || boardFull(board)) break;
 
-    if (starter === 'Player') {
+    if (starter === PLAYER) {
       computerChoosesSquare(board);
       if (someoneWon(board) || boardFull(board)) break;
     }
@@ -310,5 +313,5 @@ while (true) {
   startMatch();
   if (playAgain()[0] !== 'y') break;
 }
-
+console.clear();
 prompt('Thanks for playing Tic Tac Toe!');
