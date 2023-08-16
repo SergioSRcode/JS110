@@ -46,17 +46,17 @@ function getStarterOfRound() {
   prompt(`${WHO_GOES_FIRST[0][0]} (${WHO_GOES_FIRST[0][1]}) or ` +
   `${WHO_GOES_FIRST[1][0]} (${WHO_GOES_FIRST[1][1]})`);
 
-  let starter = RL_SYNC.question().toLowerCase();
+  let initialPlayer = RL_SYNC.question().toLowerCase();
 
-  while (!WHO_GOES_FIRST[0].includes(starter) &&
-         !WHO_GOES_FIRST[1].includes(starter)) {
+  while (!WHO_GOES_FIRST[0].includes(initialPlayer) &&
+         !WHO_GOES_FIRST[1].includes(initialPlayer)) {
     prompt('Wait, who is that?... Try again!');
-    starter = RL_SYNC.question().toLowerCase();
+    initialPlayer = RL_SYNC.question().toLowerCase();
   }
 
-  if (WHO_GOES_FIRST[0].includes(starter)) return playerIsStarter;
+  if (WHO_GOES_FIRST[0].includes(initialPlayer)) return playerIsStarter;
 
-  if (WHO_GOES_FIRST[1].includes(starter)) return computerIsStarter;
+  if (WHO_GOES_FIRST[1].includes(initialPlayer)) return computerIsStarter;
 }
 
 // Displays before new round begins
@@ -254,9 +254,9 @@ function getPrintibleScore(playerScore, computerScore) {
 }
 
 // eslint-disable-next-line max-lines-per-function
-function playRound(board, score, starter) {
+function playRound(board, score, initialPlayer) {
   while (true) {
-    if (starter === COMPUTER) {
+    if (initialPlayer === COMPUTER) {
       computerChoosesSquare(board);
       if (someoneWon(board) || boardFull(board)) break;
     }
@@ -268,7 +268,7 @@ function playRound(board, score, starter) {
     playerChoosesSquare(board);
     if (someoneWon(board) || boardFull(board)) break;
 
-    if (starter === PLAYER) {
+    if (initialPlayer === PLAYER) {
       computerChoosesSquare(board);
       if (someoneWon(board) || boardFull(board)) break;
     }
@@ -285,13 +285,13 @@ function startMatch() {
     Computer: 0,
   };
 
-  let starter = getStarterOfRound();
+  let initialPlayer = getStarterOfRound();
 
   while (true) {
     let board = initializeBoard();
 
     // eslint-disable-next-line max-len
-    playRound(board, getPrintibleScore(scoreBoard.Player, scoreBoard.Computer), starter);
+    playRound(board, getPrintibleScore(scoreBoard.Player, scoreBoard.Computer), initialPlayer);
 
     if (detectWinner(board)) scoreBoard[detectWinner(board)] += 1;
 
@@ -299,7 +299,7 @@ function startMatch() {
       prompt(`${getMatchWinner(scoreBoard)} the winner of the match!`);
       break;
     } else {
-      starter = getStarterOfRound();
+      initialPlayer = getStarterOfRound();
     }
   }
 }
