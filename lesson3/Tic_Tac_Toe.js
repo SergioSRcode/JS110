@@ -245,7 +245,9 @@ function getMatchWinner(scoreBoard) {
 }
 
 function getScore(playerScore, computerScore) {
-  return `[Player: ${playerScore} | Computer: ${computerScore}]`;
+  return `+${"-".repeat(25)}+
+| Player: ${playerScore} | Computer: ${computerScore} |
++${"-".repeat(25)}+`;
 }
 
 // eslint-disable-next-line max-lines-per-function
