@@ -81,7 +81,7 @@ function playAgain() {
     answerYesOrNo = RL_SYNC.question().toLowerCase();
   }
 
-  return answerYesOrNo;
+  return answerYesOrNo[0] === 'y';
 }
 
 // appends the last two number with "or" or a word of choice
@@ -312,7 +312,7 @@ welcomeToTTT();
 while (true) {
   console.clear();
   startMatch();
-  if (playAgain()[0] !== 'y') break;
+  if (!playAgain()) break;
 }
 console.clear();
 prompt('Thanks for playing Tic Tac Toe!');
