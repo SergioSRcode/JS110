@@ -224,10 +224,12 @@ function displayResult(playerCards, dealerCards) {
 }
 
 function displayResultWhenBothStay(playerCards, dealerCards) {
+  console.log("");
   console.log("<================================>");
   prompt(`Dealer has ${dealerCards}, for a total of: ${totalCardsValue(dealerCards)}`);
   prompt(`You have ${playerCards}, for a total of: ${totalCardsValue(playerCards)}`);
   console.log("<================================>");
+  console.log("");
   displayResult(playerCards, dealerCards);
 }
 
