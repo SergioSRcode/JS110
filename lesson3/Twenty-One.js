@@ -27,6 +27,8 @@ const YES_OR_NO = ["yes", "y", "no", "n"];
 const ACE = "A";
 const FACE_10 = ["J", "Q", "K"];
 const HIT_OR_STAY = [["hit", "h"], ["stay", "s"]];
+const MINIMUM_TOTAL_VALUE = 17;
+const TOTAL_VALUE_LIMIT = 21;
 
 function prompt(msg) {
   console.log(`=> ${msg}`);
@@ -59,12 +61,17 @@ function getHitOrStay() {
 
 function displayHandOnHit(playerCards, playerTotal) {
   prompt("You chose to hit!");
-  displayHand(playerCards, playerTotal);
+  displayPlayerHand(playerCards, playerTotal);
 }
 
 function displayUpdatedDealerHand(dealerCards) {
   prompt(`Dealer's cards are now ${hand(dealerCards)}`);
   console.log("");
+}
+
+function displayPlayerStays(playerTotal) {
+  console.clear();
+  prompt(`You chose to stay at ${playerTotal}!`);
 }
 
 function welcome() {
@@ -139,14 +146,14 @@ function totalCardsValue(cards) {
   });
 
   values.filter(value => value === ACE).forEach(_ => {
-    if (sum > 21) sum -= 10;
+    if (sum > TOTAL_VALUE_LIMIT) sum -= 10;
   });
 
   return sum;
 }
 
 function busted(cardsValue) {
-  return cardsValue > 21;
+  return cardsValue > TOTAL_VALUE_LIMIT;
 }
 
 function hand(cards) {
@@ -162,7 +169,7 @@ function addCardToHand(cards, deck) {
   cards.push(deck.pop());
 }
 
-function displayHand(cards, playerTotal) {
+function displayPlayerHand(cards, playerTotal) {
   console.log("");
   prompt(`Your cards are now: ${hand(cards)} amounting to ${playerTotal}`);
   console.log("");
@@ -170,7 +177,7 @@ function displayHand(cards, playerTotal) {
 
 function displayInitialHands(playerCards, dealerCards, playerTotal) {
   prompt(`Dealer has ${openCard(dealerCards)} and ?`);
-  displayHand(playerCards, playerTotal);
+  displayPlayerHand(playerCards, playerTotal);
 }
 
 function popTwoFromDeck(deck) {
@@ -201,7 +208,7 @@ function playerTurn(playerCards, deck, playerTotal) {
 
     if (busted(playerTotal)) break;
 
-    prompt(`You chose to stay at ${playerTotal}!`);
+    displayPlayerStays(playerTotal);
     break;
   }
 
@@ -211,7 +218,7 @@ function playerTurn(playerCards, deck, playerTotal) {
 function dealerTurn(dealerCards, deck, dealerTotal) {
   displayDealerStartsNow();
 
-  while (totalCardsValue(dealerCards) < 17) {
+  while (totalCardsValue(dealerCards) < MINIMUM_TOTAL_VALUE) {
     displayDealerHits();
     addCardToHand(dealerCards, deck);
     dealerTotal = totalCardsValue(dealerCards);
@@ -228,9 +235,9 @@ function dealerTurn(dealerCards, deck, dealerTotal) {
 }
 
 function getResult(playerTotal, dealerTotal) {
-  if (playerTotal > 21) {
+  if (playerTotal > TOTAL_VALUE_LIMIT) {
     return 'PLAYER_BUSTED';
-  } else if (dealerTotal > 21) {
+  } else if (dealerTotal > TOTAL_VALUE_LIMIT) {
     return 'DEALER_BUSTED';
   } else if (dealerTotal < playerTotal) {
     return 'PLAYER';
