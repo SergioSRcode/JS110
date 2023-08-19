@@ -128,7 +128,9 @@ function addCardToHand(cards, deck) {
 }
 
 function displayHand(cards) {
+  console.log("");
   prompt(`Your cards are now: ${hand(cards)}`);
+  console.log("");
 }
 
 function displayInitialHands(playerCards, dealerCards) {
@@ -172,12 +174,17 @@ function playerTurn(playerCards, deck) {
 }
 
 function dealerTurn(dealerCards, deck) {
+  console.log("");
+  console.log("!---------------------------!");
   prompt(`Dealer turn...`);
+  console.log("!---------------------------!");
 
   while (totalCardsValue(dealerCards) < 17) {
+    console.log("");
     prompt(`Dealer hits!`);
     addCardToHand(dealerCards, deck);
     prompt(`Dealer's cards are now ${hand(dealerCards)}`);
+    console.log("");
   }
 
   if (busted(dealerCards)) {
@@ -228,8 +235,8 @@ function displayResult(playerCards, dealerCards) {
 function displayResultWhenBothStay(playerCards, dealerCards) {
   console.log("");
   console.log("<================================>");
-  prompt(`Dealer has ${dealerCards}, for a total of: ${totalCardsValue(dealerCards)}`);
-  prompt(`You have ${playerCards}, for a total of: ${totalCardsValue(playerCards)}`);
+  prompt(`Dealer has ${hand(dealerCards)}, for a total of: ${totalCardsValue(dealerCards)}`);
+  prompt(`You have ${hand(playerCards)}, for a total of: ${totalCardsValue(playerCards)}`);
   console.log("<================================>");
   console.log("");
   displayResult(playerCards, dealerCards);
@@ -255,6 +262,7 @@ function playRound() {
 }
 
 function playAgain() {
+  console.log("");
   prompt(`Would you like to play another round? (y/n)`);
   let answer = RL_SYNC.question().toLowerCase();
 
@@ -275,4 +283,4 @@ while (true) {
   if (!playAgain()) break;
 }
 console.clear();
-prompt("Thanks for playing Twenti One!");
+prompt("Thanks for playing Twenty One!");
