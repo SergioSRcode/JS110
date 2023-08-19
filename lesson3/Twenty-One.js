@@ -44,7 +44,9 @@ function welcome() {
   prompt(`3. You start by comparing your cards' values to your oponents card`);
   prompt(`4. If you think, you can beat your oponents hand, you "stay" => end your turn`);
   prompt(`5. Otherwise you "hit" => draw a card`);
-  prompt(`6. if your cards' values surpass 21, you "bust" and lose the game. Same goes for the dealer`);
+  prompt(`6. if your cards' values surpass 21, you "bust" and lose the game. Same goes for the dealer.
+  
+Note: An "Ace" has a value of 1 if total values surpass 21; A value of 11 otherwise.`);
   console.log("");
   prompt("Press Enter to start the game!");
   RL_SYNC.question();
