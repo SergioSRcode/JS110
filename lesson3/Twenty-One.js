@@ -32,6 +32,41 @@ function prompt(msg) {
   console.log(`=> ${msg}`);
 }
 
+function displayDealerStartsNow() {
+  console.log("");
+  console.log("!---------------------------!");
+  prompt(`Dealer turn...`);
+  console.log("!---------------------------!");
+}
+
+function displayDealerHits() {
+  console.log("");
+  prompt(`Dealer hits!`);
+}
+
+function playerChoosesHit(playerChoice) {
+  return HIT_OR_STAY[0].includes(playerChoice);
+}
+
+function playerChoosesStay(playerChoice) {
+  return HIT_OR_STAY[1].includes(playerChoice);
+}
+
+function getHitOrStay() {
+  prompt(("hit or stay? (h/s)"));
+  return RL_SYNC.question().toLowerCase();
+}
+
+function displayHandOnHit(playerCards) {
+  prompt("You chose to hit!");
+  displayHand(playerCards);
+}
+
+function displayUpdatedDealerHand(dealerCards) {
+  prompt(`Dealer's cards are now ${hand(dealerCards)}`);
+  console.log("");
+}
+
 function welcome() {
   console.clear();
   prompt(`Welcome to "Twenty One"!`);
@@ -110,8 +145,8 @@ function totalCardsValue(cards) {
   return sum;
 }
 
-function busted(cards) {
-  return totalCardsValue(cards) > 21;
+function busted(cardsValue) {
+  return cardsValue > 21;
 }
 
 function hand(cards) {
@@ -147,57 +182,53 @@ function getInitialHands(playerCards, dealerCards, deck) {
   dealerCards.push(...popTwoFromDeck(deck));
 }
 
-// eslint-disable-next-line max-lines-per-function
-function playerTurn(playerCards, deck) {
+function playerTurn(playerCards, deck, playerTotal) {
   while (true) {
     let playerChoice;
     do {
-      prompt(("hit or stay? (h/s)"));
-      playerChoice = RL_SYNC.question().toLowerCase();
+      playerChoice = getHitOrStay();
 
       while (!answerIsHitOrStay(playerChoice)) {
         playerChoice = repeatPlayerChoice("no...(h)it or (s)tay? Those are the only options");
       }
 
-      if (HIT_OR_STAY[0].includes(playerChoice)) {
+      if (playerChoosesHit(playerChoice)) {
         addCardToHand(playerCards, deck);
-        prompt("You chose to hit!");
-        displayHand(playerCards);
+        playerTotal = totalCardsValue(playerCards);
+        displayHandOnHit(playerCards);
       }
-    } while (!HIT_OR_STAY[1].includes(playerChoice) && !busted(playerCards));
+    } while (!playerChoosesStay(playerChoice) && !busted(playerTotal));
 
-    if (busted(playerCards)) break;
+    if (busted(playerTotal)) break;
 
-    prompt(`You chose to stay at ${totalCardsValue(playerCards)}!`);
+    prompt(`You chose to stay at ${playerTotal}!`);
     break;
   }
+
+  return playerTotal;
 }
 
-function dealerTurn(dealerCards, deck) {
-  console.log("");
-  console.log("!---------------------------!");
-  prompt(`Dealer turn...`);
-  console.log("!---------------------------!");
+function dealerTurn(dealerCards, deck, dealerTotal) {
+  displayDealerStartsNow();
 
   while (totalCardsValue(dealerCards) < 17) {
-    console.log("");
-    prompt(`Dealer hits!`);
+    displayDealerHits();
     addCardToHand(dealerCards, deck);
-    prompt(`Dealer's cards are now ${hand(dealerCards)}`);
-    console.log("");
+    dealerTotal = totalCardsValue(dealerCards);
+
+    displayUpdatedDealerHand(dealerCards);
   }
 
-  if (busted(dealerCards)) {
-    prompt(`Dealer total is now ${totalCardsValue(dealerCards)}`);
+  if (busted(dealerTotal)) {
+    prompt(`Dealer total is now ${dealerTotal}`);
+    return dealerTotal;
   } else {
-    prompt(`Dealer stays at ${totalCardsValue(dealerCards)}`);
+    prompt(`Dealer stays at ${dealerTotal}`);
+    return dealerTotal;
   }
 }
 
-function getResult(playerCards, dealerCards) {
-  let playerTotal = totalCardsValue(playerCards);
-  let dealerTotal = totalCardsValue(dealerCards);
-
+function getResult(playerTotal, dealerTotal) {
   if (playerTotal > 21) {
     return 'PLAYER_BUSTED';
   } else if (dealerTotal > 21) {
@@ -211,8 +242,8 @@ function getResult(playerCards, dealerCards) {
   }
 }
 
-function displayResult(playerCards, dealerCards) {
-  let result = getResult(playerCards, dealerCards);
+function displayResult(playerTotal, dealerTotal) {
+  let result = getResult(playerTotal, dealerTotal);
 
   switch (result) {
     case 'PLAYER_BUSTED':
@@ -232,33 +263,36 @@ function displayResult(playerCards, dealerCards) {
   }
 }
 
-function displayResultWhenBothStay(playerCards, dealerCards) {
+function printResultOnStay(playerCards, dealerCards, playerTotal, dealerTotal) {
   console.log("");
   console.log("<================================>");
-  prompt(`Dealer has ${hand(dealerCards)}, for a total of: ${totalCardsValue(dealerCards)}`);
-  prompt(`You have ${hand(playerCards)}, for a total of: ${totalCardsValue(playerCards)}`);
+  prompt(`Dealer has ${hand(dealerCards)}, for a total of: ${dealerTotal}`);
+  prompt(`You have ${hand(playerCards)}, for a total of: ${playerTotal}`);
   console.log("<================================>");
   console.log("");
-  displayResult(playerCards, dealerCards);
+  displayResult(playerTotal, dealerTotal);
 }
 
-function playRound() {
+function playRound(playerTotal, dealerTotal) {
   let deck = initializeDeck();
   let playerCards = [];
   let dealerCards = [];
 
   getInitialHands(playerCards, dealerCards, deck);
+  playerTotal = totalCardsValue(playerCards);
+  dealerTotal = totalCardsValue(dealerCards);
   displayInitialHands(playerCards, dealerCards);
 
-  playerTurn(playerCards, deck);
-  if (busted(playerCards)) {
-    return displayResult(playerCards, dealerCards);
+  playerTotal = playerTurn(playerCards, deck, playerTotal);
+  if (busted(playerTotal)) {
+    return displayResult(playerTotal, dealerTotal);
   }
-  dealerTurn(dealerCards, deck);
-  if (busted(dealerCards)) {
-    return displayResult(playerCards, dealerCards);
+  dealerTotal = dealerTurn(dealerCards, deck, dealerTotal);
+  if (busted(dealerTotal)) {
+    return displayResult(playerTotal, dealerTotal);
   }
-  return displayResultWhenBothStay(playerCards, dealerCards);
+
+  return printResultOnStay(playerCards, dealerCards, playerTotal, dealerTotal);
 }
 
 function playAgain() {
@@ -278,8 +312,11 @@ function playAgain() {
 welcome();
 
 while (true) {
+  let playerTotal = 0;
+  let dealerTotal = 0;
+
   console.clear();
-  playRound();
+  playRound(playerTotal, dealerTotal);
   if (!playAgain()) break;
 }
 console.clear();
