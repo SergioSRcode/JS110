@@ -249,7 +249,7 @@ function playRound() {
 
   getInitialHands(playerCards, dealerCards, deck);
   displayInitialHands(playerCards, dealerCards);
-  debugger;
+
   playerTurn(playerCards, deck);
   if (busted(playerCards)) {
     return displayResult(playerCards, dealerCards);
