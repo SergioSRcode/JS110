@@ -57,9 +57,9 @@ function getHitOrStay() {
   return RL_SYNC.question().toLowerCase();
 }
 
-function displayHandOnHit(playerCards) {
+function displayHandOnHit(playerCards, playerTotal) {
   prompt("You chose to hit!");
-  displayHand(playerCards);
+  displayHand(playerCards, playerTotal);
 }
 
 function displayUpdatedDealerHand(dealerCards) {
@@ -162,15 +162,15 @@ function addCardToHand(cards, deck) {
   cards.push(deck.pop());
 }
 
-function displayHand(cards) {
+function displayHand(cards, playerTotal) {
   console.log("");
-  prompt(`Your cards are now: ${hand(cards)}`);
+  prompt(`Your cards are now: ${hand(cards)} amounting to ${playerTotal}`);
   console.log("");
 }
 
-function displayInitialHands(playerCards, dealerCards) {
+function displayInitialHands(playerCards, dealerCards, playerTotal) {
   prompt(`Dealer has ${openCard(dealerCards)} and ?`);
-  displayHand(playerCards);
+  displayHand(playerCards, playerTotal);
 }
 
 function popTwoFromDeck(deck) {
@@ -195,7 +195,7 @@ function playerTurn(playerCards, deck, playerTotal) {
       if (playerChoosesHit(playerChoice)) {
         addCardToHand(playerCards, deck);
         playerTotal = totalCardsValue(playerCards);
-        displayHandOnHit(playerCards);
+        displayHandOnHit(playerCards, playerTotal);
       }
     } while (!playerChoosesStay(playerChoice) && !busted(playerTotal));
 
@@ -215,7 +215,6 @@ function dealerTurn(dealerCards, deck, dealerTotal) {
     displayDealerHits();
     addCardToHand(dealerCards, deck);
     dealerTotal = totalCardsValue(dealerCards);
-
     displayUpdatedDealerHand(dealerCards);
   }
 
@@ -281,7 +280,7 @@ function playRound(playerTotal, dealerTotal) {
   getInitialHands(playerCards, dealerCards, deck);
   playerTotal = totalCardsValue(playerCards);
   dealerTotal = totalCardsValue(dealerCards);
-  displayInitialHands(playerCards, dealerCards);
+  displayInitialHands(playerCards, dealerCards, playerTotal);
 
   playerTotal = playerTurn(playerCards, deck, playerTotal);
   if (busted(playerTotal)) {
