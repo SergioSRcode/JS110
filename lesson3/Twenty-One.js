@@ -22,7 +22,10 @@ ALGORITHM:
 - if hit && sum > 21 => bust
 - Otherwise, go to 1.
 */
-const RL_SYNC = require("readline-sync");
+
+// meta data
+const rlSync = require("readline-sync");
+
 const YES_OR_NO = ["yes", "y", "no", "n"];
 const ACE = "A";
 const FACE_10 = ["J", "Q", "K"];
@@ -30,6 +33,7 @@ const HIT_OR_STAY = [["hit", "h"], ["stay", "s"]];
 const MINIMUM_TOTAL_VALUE = 17;
 const TOTAL_VALUE_LIMIT = 21;
 
+// helper functions
 function prompt(msg) {
   console.log(`=> ${msg}`);
 }
@@ -56,7 +60,7 @@ function playerChoosesStay(playerChoice) {
 
 function getHitOrStay() {
   prompt(("hit or stay? (h/s)"));
-  return RL_SYNC.question().toLowerCase();
+  return rlSync.question().toLowerCase();
 }
 
 function displayHandOnHit(playerCards, playerTotal) {
@@ -91,7 +95,7 @@ function welcome() {
 Note: An "Ace" has a value of 1 if total values surpass 21; A value of 11 otherwise.`);
   console.log("");
   prompt("Press Enter to start the game!");
-  RL_SYNC.question();
+  rlSync.question();
 }
 
 function answerIsHitOrStay(answer) {
@@ -101,7 +105,7 @@ function answerIsHitOrStay(answer) {
 function repeatPlayerChoice(msg) {
   prompt(msg);
 
-  return RL_SYNC.question().toLowerCase();
+  return rlSync.question().toLowerCase();
 }
 
 function shuffle(deck) {
@@ -304,11 +308,11 @@ function playRound(playerTotal, dealerTotal) {
 function playAgain() {
   console.log("");
   prompt(`Would you like to play another round? (y/n)`);
-  let answer = RL_SYNC.question().toLowerCase();
+  let answer = rlSync.question().toLowerCase();
 
   while (!YES_OR_NO.includes(answer)) {
     prompt(`I must have blinked..what were you saying? (y/n)`);
-    answer = RL_SYNC.question().toLowerCase();
+    answer = rlSync.question().toLowerCase();
   }
 
   return answer[0] === "y";
