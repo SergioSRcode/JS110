@@ -4,39 +4,64 @@
 // Modify the wordSizes function from the previous exercise to exclude non-letters 
 // when determining word size. For instance, the word size of "it's" is 3, not 4.
 
-function wordSizes(words) {
-  let wordsArray = words.split(' ');
-  let count = {};
+function wordSizes(str) {
+  let result = {};
+  let arrOfStr = str.split(" ");
+  let keys;
+  let newArr = [];
 
-  for (let idx = 0; idx < wordsArray.length; idx += 1) {
-    let cleanWordSize = removeNonLetters(wordsArray[idx].toLowerCase()).length;
-    if (cleanWordSize === 0) continue;
- 
-    count[cleanWordSize] = count[cleanWordSize] || 0;
-    count[cleanWordSize] += 1;
+  if (str === "") return result;
+
+  for (let i = 0; i < arrOfStr.length; i++) {
+    let currentWord = removeNonLetters(arrOfStr[i]);
+    result[currentWord.length] = 0;
+    newArr.push(currentWord);
   }
 
-  return count;
-}
+  keys = Object.keys(result);
 
-function removeNonLetters(string) {
-  let result = '';
-
-  for (let idx = 0; idx < string.length; idx += 1) {
-    if (isLetter(string[idx])) {
-      result += string[idx];
-    }
-  }
+  keys.forEach(key => {
+    newArr.forEach(word => {
+      if (Number(key) === word.length) {
+        result[key] += 1;
+      }
+    });
+  });
 
   return result;
 }
 
-function isLetter(char) {
-  return char >= 'a' && char <= 'z';
+function removeNonLetters(word) {
+  let wordArr = word.split("");
+  let filteredArr = wordArr.filter(char => isLetter(char));
+
+  return filteredArr.join("");
 }
 
+function isLetter(char) {
+  return char.toLowerCase() >= "a" && char.toLowerCase() <= "z";
+}
 
-console.log(wordSizes('Four score and seven.'));                       // { "3": 1, "4": 1, "5": 1, "6": 1 }
-console.log(wordSizes('Hey diddle diddle, the cat and the fiddle!'));  // { "3": 5, "6": 1, "7": 2 }
-console.log(wordSizes("What's up doc?"));                              // { "2": 1, "4": 1, "6": 1 }
-console.log(wordSizes(''));                                            // {}
+// console.log(removeNonLetters("Hello!"));
+
+// function removeNonLetters(string) {
+//   let result = '';
+
+//   for (let idx = 0; idx < string.length; idx += 1) {
+//     if (isLetter(string[idx])) {
+//       result += string[idx];
+//     }
+//   }
+
+//   return result;
+// }
+
+// function isLetter(char) {
+//   return char >= 'a' && char <= 'z';
+// }
+
+
+wordSizes('Four score and seven.');                       // { "3": 1, "4": 1, "5": 2 }
+wordSizes('Hey diddle diddle, the cat and the fiddle!');  // { "3": 5, "6": 3 }
+wordSizes("What's up doc?");                              // { "2": 1, "3": 1, "5": 1 }
+wordSizes('');                                            // {}
