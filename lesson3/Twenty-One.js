@@ -29,7 +29,7 @@ const rlSync = require("readline-sync");
 const YES_OR_NO = ["yes", "y", "no", "n"];
 const ACE = "A";
 const FACE_10 = ["J", "Q", "K"];
-const HIT_OR_STAY = [["hit", "h"], ["stay", "s"]];
+const HIT_OR_STAY = { hit: ["hit", "h"], stay: ["stay", "s"] };
 const MINIMUM_TOTAL_VALUE = 17;
 const TOTAL_VALUE_LIMIT = 21;
 
@@ -51,11 +51,11 @@ function displayDealerHits() {
 }
 
 function playerChoosesHit(playerChoice) {
-  return HIT_OR_STAY[0].includes(playerChoice);
+  return HIT_OR_STAY["hit"].includes(playerChoice);
 }
 
 function playerChoosesStay(playerChoice) {
-  return HIT_OR_STAY[1].includes(playerChoice);
+  return HIT_OR_STAY["stay"].includes(playerChoice);
 }
 
 function getHitOrStay() {
@@ -99,7 +99,7 @@ Note: An "Ace" has a value of 1 if total values surpass 21; A value of 11 otherw
 }
 
 function answerIsHitOrStay(answer) {
-  return HIT_OR_STAY[0].includes(answer) || HIT_OR_STAY[1].includes(answer);
+  return HIT_OR_STAY["hit"].includes(answer) || HIT_OR_STAY["stay"].includes(answer);
 }
 
 function repeatPlayerChoice(msg) {
