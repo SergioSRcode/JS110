@@ -271,6 +271,7 @@ function displayResult(playerTotal, dealerTotal) {
     case 'TIE':
       prompt("It's a tie!");
   }
+  return null;
 }
 
 function printResultOnStay(playerCards, dealerCards, playerTotal, dealerTotal) {
@@ -302,7 +303,8 @@ function playRound(playerTotal, dealerTotal) {
     return displayResult(playerTotal, dealerTotal);
   }
 
-  return printResultOnStay(playerCards, dealerCards, playerTotal, dealerTotal);
+  printResultOnStay(playerCards, dealerCards, playerTotal, dealerTotal);
+  return null;
 }
 
 function playAgain() {
