@@ -188,7 +188,7 @@ function popTwoFromDeck(deck) {
   return [deck.pop(), deck.pop()];
 }
 
-function getInitialHands(playerCards, dealerCards, deck) {
+function drawInitialHands(playerCards, dealerCards, deck) {
   playerCards.push(...popTwoFromDeck(deck));
   dealerCards.push(...popTwoFromDeck(deck));
 }
@@ -288,7 +288,7 @@ function playRound(playerTotal, dealerTotal) {
   let playerCards = [];
   let dealerCards = [];
 
-  getInitialHands(playerCards, dealerCards, deck);
+  drawInitialHands(playerCards, dealerCards, deck);
   playerTotal = totalCardsValue(playerCards);
   dealerTotal = totalCardsValue(dealerCards);
   displayInitialHands(playerCards, dealerCards, playerTotal);
