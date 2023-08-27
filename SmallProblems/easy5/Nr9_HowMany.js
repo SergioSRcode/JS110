@@ -7,7 +7,7 @@ function countOccurences(vehicles) {
 
   vehicles = vehicles.map(elem => elem.toLowerCase());
 
-  vehicles.forEach(vehicle => nonDuplicates[vehicle] = nonDuplicates[vehicle] + 1 || 1);
+  vehicles.forEach(vehicle => nonDuplicates[vehicle] = (nonDuplicates[vehicle] + 1) || 1);
 
   Object.keys(nonDuplicates).forEach(key => console.log(`${key} => ${nonDuplicates[key]}`));
 }
